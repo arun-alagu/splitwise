@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,12 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class User extends BaseModel {
     private String name;
     @Column(unique = true)
     private String email;
     @Column(unique = true)
-    private String phoneNumber;
+    private Long phoneNumber;
     @ManyToMany
     private List<Group> memberGroups;
     
