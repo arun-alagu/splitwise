@@ -1,5 +1,6 @@
 package com.example.splitwise.services;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -28,20 +29,22 @@ public class UserService {
     public User updateUser(CreateUserRequest request, UUID id) {
         User user = userRepository.findById(id).orElseThrow();
 
-        if (user.getEmail().equals(null) || !(request.getEmail() == null)
-                && !request.getEmail().isEmpty()
-                && !user.getEmail().equals(request.getEmail()))
-            user.setEmail(request.getEmail());
+        Field[] fields = request.getClass().getDeclaredFields();
+        for(Field field : fields){
+            field.setAccessible(true);
+            try {
+                Object value = field.get(request);
+                if (value != null) {
+                    Field userField = User.class.getDeclaredField(field.getName());
+                    userField.setAccessible(true);
+                    userField.set(user, value);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException("Error updating user field: " + field.getName(), e);
+            }
 
-        if (user.getName().equals(null) || !(request.getName() == null)
-                && !request.getName().isEmpty()
-                && !user.getName().equals(request.getName()))
-            user.setName(request.getName());
-
-        if (user.getPhoneNumber().equals(null) || !(request.getPhoneNumber() == null)
-                && !user.getPhoneNumber().equals(request.getPhoneNumber()))
-            user.setPhoneNumber(request.getPhoneNumber());
-
+        }
+        
         return userRepository.save(user);
     }
 }
