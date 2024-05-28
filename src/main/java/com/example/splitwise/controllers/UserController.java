@@ -23,22 +23,20 @@ import com.example.splitwise.services.UserService;
 @RequestMapping("user/")
 public class UserController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping(path = "/{id}")
-    public @ResponseBody User getUser(@PathVariable(name = "id") UUID id){
-        return userRepository.findById(id).orElseThrow();
+    public @ResponseBody User getUser(@PathVariable(name = "id") UUID userId){
+        return userService.getUser(userId);
     }
 
     @GetMapping(path = "/all")
     public @ResponseBody List<User> getAllUser(){
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
 
     @PostMapping(path = "/create")
@@ -59,7 +57,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteUser(@PathVariable(name = "id") UUID id){
-        userRepository.deleteById(id);
+    public void deleteUser(@PathVariable(name = "id") UUID userId){
+        userService.deleteUser(userId);
     }
 }

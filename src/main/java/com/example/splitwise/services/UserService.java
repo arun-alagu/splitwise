@@ -1,6 +1,8 @@
 package com.example.splitwise.services;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +20,26 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // GET Mapping
+    public User getUser(UUID userId) {
+        return userRepository.findById(userId).orElseThrow();
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<User> getUsers(List<UUID> userIds) {
+        List<User> users = new ArrayList<>();
+
+        for (UUID userId : userIds) {
+            users.add(getUser(userId));
+        }
+
+        return users;
+    }
+
+    // POST Mapping
     public User createUser(CreateUserRequest request) {
 
         User user = User.builder().email(request.getEmail()).name(request.getName())
@@ -26,11 +48,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // PATCH Mapping
     public User updateUser(CreateUserRequest request, UUID id) {
-        User user = userRepository.findById(id).orElseThrow();
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
         Field[] fields = request.getClass().getDeclaredFields();
-        for(Field field : fields){
+        for (Field field : fields) {
             field.setAccessible(true);
             try {
                 Object value = field.get(request);
@@ -44,7 +67,12 @@ public class UserService {
             }
 
         }
-        
+
         return userRepository.save(user);
+    }
+
+    // DELETE Mapping
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
     }
 }
