@@ -18,7 +18,6 @@ import com.example.splitwise.dtos.CreateGroupRequest;
 import com.example.splitwise.dtos.GetGroupResponse;
 import com.example.splitwise.models.Group;
 import com.example.splitwise.models.User;
-import com.example.splitwise.repository.GroupRepository;
 import com.example.splitwise.services.GroupService;
 
 @RestController
@@ -32,7 +31,7 @@ public class GroupController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseBody GetGroupResponse getGroup(@PathVariable(name = "id") UUID groupId){
+    @ResponseBody public GetGroupResponse getGroup(@PathVariable(name = "id") UUID groupId){
         Group group = groupService.getGroup(groupId);
 
         List<UUID> members = new ArrayList<>();
@@ -58,7 +57,7 @@ public class GroupController {
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody List<GetGroupResponse> getAllGroups(){
+    @ResponseBody public List<GetGroupResponse> getAllGroups(){
         List<GetGroupResponse> response = new ArrayList<>();
         for(Group group : groupService.getAllGroups()){
             response.add(getGroup(group.getId()));
@@ -67,18 +66,18 @@ public class GroupController {
     }
 
     @PostMapping(path = "/create")
-    @ResponseBody UUID createGroup(@RequestBody CreateGroupRequest request){
+    @ResponseBody public UUID createGroup(@RequestBody CreateGroupRequest request){
         return groupService.createGroup(request).getId();
     }
 
     @PatchMapping(path = "/{id}")
-    @ResponseBody UUID updateGroup(@RequestBody CreateGroupRequest request, 
+    @ResponseBody public UUID updateGroup(@RequestBody CreateGroupRequest request, 
     @PathVariable(name = "id") UUID groupId){
         return groupService.updateGroup(request, groupId).getId();
     }
 
     @DeleteMapping(path = "/{id}")
-    @ResponseBody void deleteGroup(@PathVariable(name = "id") UUID groupId){
+    @ResponseBody public void deleteGroup(@PathVariable(name = "id") UUID groupId){
         groupService.deleteGroup(groupId);
     }
 }

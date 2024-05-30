@@ -1,7 +1,9 @@
 package com.example.splitwise.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class GroupService {
         this.userService = userService;
     }
 
-    // POST Mapping
+    // CREATE Mapping
     public Group createGroup(CreateGroupRequest request) {
         Group group = Group.builder()
                 .name(request.getName())
@@ -34,43 +36,44 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-    // GET Mapping
+    // READ Mapping
+    // READ by ID
     public Group getGroup(UUID groupId) {
         return groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
     }
 
+    //READ All
     public List<Group> getAllGroups() {
         return groupRepository.findAll();
     }
 
-    // PATCH Mapping
+    // UPDATE Mapping
     public Group updateGroup(CreateGroupRequest request, UUID groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
 
-        if (request.getName() != null)
-            group.setName(request.getName());
-        if (request.getDescription() != null)
-            group.setDescription(request.getDescription());
+        Optional.ofNullable(request.getName()).ifPresent(group::setName);
+        Optional.ofNullable(request.getDescription()).ifPresent(group::setDescription);
 
-        if (request.getAdmins() != null) {
-            List<User> admins = request.getAdmins().stream()
-                    .map(adminId -> userService.getUser(adminId))
-                    .collect(Collectors.toList());
-            group.setAdmins(admins);
-        }
-        if (request.getMembers() != null) {
-            List<User> members = request.getMembers().stream()
-                    .map(memberId -> userService.getUser(memberId))
-                    .collect(Collectors.toList());
-            group.setMembers(members);
-        }
+        updateUsers(request.getAdmins(), group::setAdmins);
+        updateUsers(request.getMembers(), group::setMembers);
 
         return groupRepository.save(group);
     }
 
+    // UPDATE Helper
+    private void updateUsers(List<UUID> userIds, Consumer<List<User>> setUsers) {
+        if (userIds != null) {
+            List<User> users = userIds.stream()
+                    .map(userService::getUser)
+                    .collect(Collectors.toList());
+            setUsers.accept(users);
+        }
+    }
+
     // DELETE Mapping
+    // DELETE by ID
     public void deleteGroup(UUID groupId) {
         groupRepository.deleteById(groupId);
     }

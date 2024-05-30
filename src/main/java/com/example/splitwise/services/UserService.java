@@ -21,14 +21,17 @@ public class UserService {
     }
 
     // GET Mapping
+    // GET User by Id
     public User getUser(UUID userId) {
         return userRepository.findById(userId).orElseThrow();
     }
 
+    // GET All Users
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    // GET Users list by Id list
     public List<User> getUsers(List<UUID> userIds) {
         List<User> users = new ArrayList<>();
 
