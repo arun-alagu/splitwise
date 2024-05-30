@@ -1,29 +1,26 @@
 package com.example.splitwise.models;
 
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity(name = "splitwise_user")
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+
 public class User extends BaseModel {
     private String name;
     @Column(unique = true)
     private String email;
     @Column(unique = true)
     private Long phoneNumber;
-    @ManyToMany
-    private List<Group> memberGroups;
     
     @Override
     public boolean equals(Object o) {
