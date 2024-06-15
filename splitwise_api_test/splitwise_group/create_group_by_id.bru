@@ -1,0 +1,26 @@
+meta {
+  name: create_group_by_id
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/group/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Pongal Travel",
+    "description": "Travel Expenses",
+    "members": [
+      "428a7aec-793d-4b3d-bebb-eeff218a88d5",
+      "81585c4a-965e-4a38-8308-840ab2b5a559",
+      "e2f112a5-929b-41b5-a6b0-05625bf93d38"
+    ],
+    "admins": [
+      "428a7aec-793d-4b3d-bebb-eeff218a88d5"
+    ]
+  }
+}

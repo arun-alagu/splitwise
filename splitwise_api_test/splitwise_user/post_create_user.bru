@@ -1,0 +1,19 @@
+meta {
+  name: post_create_user
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/user/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Myz",
+    "email": "test2@test.com",
+    "phoneNumber": 1234517890
+  }
+}

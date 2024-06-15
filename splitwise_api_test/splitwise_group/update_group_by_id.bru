@@ -1,0 +1,21 @@
+meta {
+  name: update_group_by_id
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:8080/group/057f483d-e98b-458e-ba68-a5f02cd6b817
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "members": [
+      "2219d064-9c23-4b8e-9bbd-7d6cc1257084",
+      "73c21ce2-8866-4d00-b612-9de46b18fa37",
+      "83c972cf-8bd8-4481-a7fc-f184114df0f0"
+    ]
+  }
+}

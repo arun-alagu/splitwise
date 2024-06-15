@@ -1,0 +1,39 @@
+meta {
+  name: add_expense
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/expense/add
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "totalAmount": 1600.0,
+    "name": "Stay",
+    "currency": "INR",
+    "paidBy": [
+      {
+        "user": "81585c4a-965e-4a38-8308-840ab2b5a559",
+        "amount": 1500.0
+      }
+    ],
+    "owedBy": [
+      {
+        "user": "e2f112a5-929b-41b5-a6b0-05625bf93d38",
+        "percentage": 30
+      },
+      {
+        "user": "81585c4a-965e-4a38-8308-840ab2b5a559","percentage": 30
+      },
+      {
+        "user": "428a7aec-793d-4b3d-bebb-eeff218a88d5","percentage": 40
+      }
+    ],
+    "splitType": "PERCENTAGE",
+    "group": "17a909b0-c709-4a50-ba66-8051f45df428"
+  }
+}
