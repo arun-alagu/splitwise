@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.splitwise.dtos.CreateUserRequest;
+import com.example.splitwise.dtos.UserRequest;
 import com.example.splitwise.models.User;
 import com.example.splitwise.services.UserService;
 
@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/create")
-    public UUID createUser(@RequestBody CreateUserRequest request){
+    public UUID createUser(@RequestBody UserRequest request){
         return userService.createUser(request).getId();
     }
 
@@ -49,7 +49,7 @@ public class UserController {
     // }
 
     @PatchMapping(path = "/{id}")
-    public  UUID updateUser(@RequestBody CreateUserRequest request,
+    public  UUID updateUser(@RequestBody UserRequest request,
     @PathVariable(name = "id") UUID id){
         return userService.updateUser(request, id).getId();
     }

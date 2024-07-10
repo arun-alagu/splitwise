@@ -2,13 +2,14 @@ package com.example.splitwise.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.example.splitwise.dtos.CreateGroupRequest;
+import com.example.splitwise.dtos.GroupRequest;
 import com.example.splitwise.models.Group;
 import com.example.splitwise.models.User;
 import com.example.splitwise.repository.GroupRepository;
@@ -25,7 +26,7 @@ public class GroupService {
     }
 
     // CREATE Mapping
-    public Group createGroup(CreateGroupRequest request) {
+    public Group createGroup(GroupRequest request) {
         Group group = Group.builder()
                 .name(request.getName())
                 .description(request.getDescription())
@@ -49,7 +50,7 @@ public class GroupService {
     }
 
     // UPDATE Mapping
-    public Group updateGroup(CreateGroupRequest request, UUID groupId) {
+    public Group updateGroup(GroupRequest request, UUID groupId) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
 
@@ -63,11 +64,11 @@ public class GroupService {
     }
 
     // UPDATE Helper
-    private void updateUsers(List<UUID> userIds, Consumer<List<User>> setUsers) {
+    private void updateUsers(Set<UUID> userIds, Consumer<Set<User>> setUsers) {
         if (userIds != null) {
-            List<User> users = userIds.stream()
+            Set<User> users = userIds.stream()
                     .map(userService::getUser)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
             setUsers.accept(users);
         }
     }

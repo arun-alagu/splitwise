@@ -1,8 +1,6 @@
 package com.example.splitwise.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.splitwise.dtos.CreateGroupRequest;
-import com.example.splitwise.dtos.GetGroupResponse;
+import com.example.splitwise.dtos.GroupRequest;
+import com.example.splitwise.dtos.GroupResponse;
 import com.example.splitwise.models.Group;
 import com.example.splitwise.models.User;
 import com.example.splitwise.services.GroupService;
@@ -31,20 +29,20 @@ public class GroupController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseBody public GetGroupResponse getGroup(@PathVariable(name = "id") UUID groupId){
+    @ResponseBody public GroupResponse getGroup(@PathVariable(name = "id") UUID groupId){
         Group group = groupService.getGroup(groupId);
 
-        List<UUID> members = new ArrayList<>();
+        Set<UUID> members = new HashSet<>();
         for(User user : group.getMembers()){
             members.add(user.getId());
         }
 
-        List<UUID> admins = new ArrayList<>();
+        Set<UUID> admins = new HashSet<>();
         for (User user : group.getAdmins()) {
             admins.add(user.getId());
         }
 
-        GetGroupResponse response = GetGroupResponse.builder()
+        GroupResponse response = GroupResponse.builder()
         .id(group.getId())
         .name(group.getName())
         .description(group.getDescription())
@@ -57,8 +55,8 @@ public class GroupController {
     }
 
     @GetMapping(path = "/all")
-    @ResponseBody public List<GetGroupResponse> getAllGroups(){
-        List<GetGroupResponse> response = new ArrayList<>();
+    @ResponseBody public List<GroupResponse> getAllGroups(){
+        List<GroupResponse> response = new ArrayList<>();
         for(Group group : groupService.getAllGroups()){
             response.add(getGroup(group.getId()));
         }
@@ -66,12 +64,12 @@ public class GroupController {
     }
 
     @PostMapping(path = "/create")
-    @ResponseBody public UUID createGroup(@RequestBody CreateGroupRequest request){
+    @ResponseBody public UUID createGroup(@RequestBody GroupRequest request){
         return groupService.createGroup(request).getId();
     }
 
     @PatchMapping(path = "/{id}")
-    @ResponseBody public UUID updateGroup(@RequestBody CreateGroupRequest request, 
+    @ResponseBody public UUID updateGroup(@RequestBody GroupRequest request,
     @PathVariable(name = "id") UUID groupId){
         return groupService.updateGroup(request, groupId).getId();
     }

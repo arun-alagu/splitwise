@@ -1,18 +1,14 @@
 package com.example.splitwise.models;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity(name = "splitwise_group")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +16,11 @@ public class Group extends BaseModel{
     private String name;
     private String description;
     @ManyToMany
-    private List<User> admins;
+    private Set<User> admins = new HashSet<>();
     @ManyToMany
-    private List<User> members;
-    @OneToMany(mappedBy = "group")
-    private List<Expense> expenses;
+    private Set<User> members = new HashSet<>();
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Expense> expenses = new HashSet<>();
     @ManyToOne
     private User createdBy;
 }

@@ -1,18 +1,21 @@
 package com.example.splitwise.dtos;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
-public class GetGroupResponse {
+public class GroupResponse {
     private UUID id;
     private String name;
     private String description;
-    private List<UUID> members;
-    private List<UUID> admins;
+    private Set<UUID> members;
+    private Set<UUID> admins;
     private UUID createdBy;
 }

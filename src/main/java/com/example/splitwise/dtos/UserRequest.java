@@ -1,9 +1,13 @@
 package com.example.splitwise.dtos;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class CreateUserRequest {
+@Getter
+@Setter
+@Builder
+public class UserRequest {
     private String email;
     private String name;
     private Long phoneNumber;

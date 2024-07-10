@@ -2,19 +2,24 @@ package com.example.splitwise.dtos;
 
 import java.util.Currency;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.example.splitwise.models.SplitType;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class CreateExpenseRequest {
+@Getter
+@Setter
+@Builder
+public class ExpenseRequest {
     private Float totalAmount;
     private String name;
     private Currency currency;
-    private List<CreateSplitRequest> paidBy;
-    private List<CreateSplitRequest> owedBy;
+    private Set<SplitRequest> paidBy;
+    private Set<SplitRequest> owedBy;
     private SplitType splitType;
     private UUID group;
 }

@@ -3,14 +3,14 @@ package com.example.splitwise.dtos;
 import java.util.UUID;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Builder
-public class GetSplitResponse {
+public class SplitResponse {
     private UUID id;
     private UUID user;
     private Float amount;
-    private Float percentage;
-    private Integer ratio;
 }

@@ -1,20 +1,13 @@
 package com.example.splitwise.models;
 
-import java.util.Currency;
-import java.util.List;
+import java.util.*;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,10 +15,10 @@ public class Expense extends BaseModel{
     private Float totalAmount;
     private String name;
     private Currency currency;
-    @OneToMany
-    private List<Split> paidBy;
-    @OneToMany
-    private List<Split> owedBy;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Split> paidBy = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Split> owedBy = new HashSet<>();
     @Enumerated(EnumType.ORDINAL)
     private SplitType splitType;
     @ManyToOne

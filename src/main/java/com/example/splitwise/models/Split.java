@@ -3,22 +3,19 @@ package com.example.splitwise.models;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity
-@Data
+
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Split extends BaseModel{
     @ManyToOne
     private User user;
     private Float amount;
-    private Float percentage;
-    private Integer ratio;
-
 }

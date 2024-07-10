@@ -1,13 +1,11 @@
 package com.example.splitwise.services;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.stereotype.Service;
 
-import com.example.splitwise.dtos.CreateUserRequest;
+import com.example.splitwise.dtos.UserRequest;
 import com.example.splitwise.models.User;
 import com.example.splitwise.repository.UserRepository;
 
@@ -32,8 +30,8 @@ public class UserService {
     }
 
     // GET Users list by Id list
-    public List<User> getUsers(List<UUID> userIds) {
-        List<User> users = new ArrayList<>();
+    public Set<User> getUsers(Set<UUID> userIds) {
+        Set<User> users = new HashSet<>();
 
         for (UUID userId : userIds) {
             users.add(getUser(userId));
@@ -43,7 +41,7 @@ public class UserService {
     }
 
     // POST Mapping
-    public User createUser(CreateUserRequest request) {
+    public User createUser(UserRequest request) {
 
         User user = User.builder().email(request.getEmail()).name(request.getName())
                 .phoneNumber(request.getPhoneNumber()).build();
@@ -52,7 +50,7 @@ public class UserService {
     }
 
     // PATCH Mapping
-    public User updateUser(CreateUserRequest request, UUID id) {
+    public User updateUser(UserRequest request, UUID id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
         Field[] fields = request.getClass().getDeclaredFields();
