@@ -8,6 +8,4 @@ import lombok.Data;
 public class CreateSplitRequest {
     private UUID user;
     private Float amount;
-    private Float percentage;
-    private Integer ratio;
 }
